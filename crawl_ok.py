@@ -2,19 +2,23 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_text_from_url(url):
+    header = {
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36" ,
+    'referer':'https://www.google.com/'}
     try:
-        response = requests.get(url)
+        response = requests.get(url,headers=header)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         text_data = soup.get_text()
-        text_data = soup.find_all('textarea')
+        text_data = soup.find_all('div','chapter-c')
         tilename = str(soup.find_all('div','chapter-title'))
         tilename = tilename.replace(tilename[-7:],'')
         tilename = tilename.replace('\n','')
         text_data = str(text_data) 
         lenght = len(text_data) - 140
+        text_data=text_data.replace(r"<br/><br/>",' ')
         text_data=text_data.replace("”“",' ')
-        text_data=text_data.replace("“",' ')
+        
         text_data=text_data.replace("”",' ')
         text_data=text_data[31:lenght]+'.Hết chương '
         return text_data
@@ -46,14 +50,14 @@ def split_text_into_chunks(text, chunk_size=500):
         chunks.append(current_chunk)
 
     return chunks
-
+ 
     if current_chunk:
         chunks.append(current_chunk)
 
     return chunks
 
 if __name__ == "__main__":
-    url = "https://truyen35.vn/doan-sat-thu-tien-hoa-than-cap/chuong-7"  # Thay đổi URL này bằng đường dẫn thực tế
+    url = "https://truyenfull.vn/kiem-phap-vuong-gia/chuong-670/"  # Thay đổi URL này bằng đường dẫn thực tế
     data = get_text_from_url(url)
 
     if data:

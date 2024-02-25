@@ -40,7 +40,8 @@ def get_data (ten_truyen,chuong='1') :
     return data[31:lenght] ,list_ss,tilename[150:],lenght
 
 def conver_mp3(list_ss) :
-    hight = 10
+    hight = len(list_ss)
+    
     with alive_bar(hight,calibrate=50,title='Converting') as bar :
         # process item
         i =0
@@ -62,9 +63,11 @@ def conver_mp3(list_ss) :
             f= open('test3.mp3','ab')
             for dta in list_file :
                 f.write(dta)
+            
             f.close()
         
          
     list_file.clear()
     list_ss.clear()
+    #return list_file
         
